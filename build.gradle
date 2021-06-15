@@ -4,8 +4,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.5.20-RC'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -28,13 +28,8 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 
@@ -70,23 +65,14 @@ publishing {
             }
         }
     }
-
-    // select the repositories you want to publish to
-    repositories {
-        // uncomment to publish to the local maven
-        // mavenLocal()
-    }
-}
-repositories {
-    mavenCentral()
 }
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "16"
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "16"
     }
 }
