@@ -3,13 +3,12 @@ package tpoomlmly.blockround
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
-import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.world.World
 
-class WebItem : Item(FabricItemSettings().group(ItemGroup.MISC)) {
+class WebItem : Item(FabricItemSettings().group(Blockround.ROUND_ITEM_GROUP)) {
 
     companion object {
         private val RUNTIME = Runtime.getRuntime()
