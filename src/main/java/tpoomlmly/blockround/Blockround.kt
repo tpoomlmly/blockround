@@ -30,9 +30,6 @@ class Blockround : ModInitializer {
         val ROUND_ITEM_GROUP: ItemGroup =
             FabricItemGroupBuilder.build(Identifier(ID, "round_item_group")) { ItemStack(Items.PAINTING) }
 
-//        @JvmField
-//        val BAR_SIGN_ENTITY_TYPE = BarSignEntityType()
-
         @JvmField
         val BAR_SIGN_BLOCK = BarSignBlock()
 
@@ -42,9 +39,6 @@ class Blockround : ModInitializer {
 
         @JvmField
         val WEB_ITEM = WebItem()
-
-//        @JvmField
-//        val BAR_SIGN_ITEM = BarSignItem()
 
         @JvmField
         val BAR_SIGN_BLOCK_ITEM = BarSignBlockItem()
@@ -61,9 +55,6 @@ class Blockround : ModInitializer {
 
         registerItem(BAR_SIGN_BLOCK_ITEM, "bar_sign_block_item")
         registerItem(WEB_ITEM, "web_item")
-//        Registry.register(Registry.ITEM, Identifier(ID, "bar_sign_item"), BAR_SIGN_ITEM)
-
-        //Registry.register(Registry.ENTITY_TYPE, Identifier(ID, BarSignEntityType.ID), BAR_SIGN_ENTITY_TYPE)
 
         AttackBlockCallback.EVENT.register { _, world, _, pos, _ ->
             if (world.getBlockEntity(
