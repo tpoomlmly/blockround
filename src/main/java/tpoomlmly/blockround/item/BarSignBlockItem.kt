@@ -1,6 +1,7 @@
 package tpoomlmly.blockround.item
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
@@ -16,7 +17,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 import tpoomlmly.blockround.Blockround
 import tpoomlmly.blockround.entity.BarSignBlockEntity
-import tpoomlmly.blockround.network.BarSignEditorOpenS2CPacket
+import tpoomlmly.blockround.network.barSignEditorOpenS2CBuffer
 
 class BarSignBlockItem : BlockItem(
     Blockround.BAR_SIGN_BLOCK,
@@ -54,12 +55,12 @@ class BarSignBlockItem : BlockItem(
     ): Boolean {
         val postPlacementSuccess = super.postPlacement(pos, world, player, stack, state)
         if (!world.isClient && !postPlacementSuccess && player != null) {
+            // Set the player as the sign's editor
+            (world.getBlockEntity(pos) as BarSignBlockEntity).editor = player.uuid
             // Tell the client to open the edit sign screen
-            val sign = world.getBlockEntity(pos) as BarSignBlockEntity
             val serverPlayer = player as ServerPlayerEntity
-            sign.editor = player.uuid
             serverPlayer.networkHandler.sendPacket(BlockUpdateS2CPacket(world, pos))
-            serverPlayer.networkHandler.sendPacket(BarSignEditorOpenS2CPacket(pos))
+            ServerPlayNetworking.send(serverPlayer, Blockround.BAR_SIGN_CHANNEL, barSignEditorOpenS2CBuffer(pos))
         }
         return postPlacementSuccess
     }

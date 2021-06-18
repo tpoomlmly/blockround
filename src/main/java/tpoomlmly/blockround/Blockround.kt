@@ -24,6 +24,7 @@ class Blockround : ModInitializer {
 
     companion object {
         const val ID = "blockround"
+        val BAR_SIGN_CHANNEL = Identifier(ID, "barsign")
 
         @JvmField
         val ROUND_ITEM_GROUP: ItemGroup =
@@ -73,13 +74,15 @@ class Blockround : ModInitializer {
             ActionResult.PASS
         }
 
-        ServerPlayNetworking.registerGlobalReceiver(Identifier(ID, "barsign")) { server, player, handler, buf, sender ->
+        ServerPlayNetworking.registerGlobalReceiver(BAR_SIGN_CHANNEL) { server, player, handler, buf, sender ->
 
         }
 
-        ClientPlayNetworking.registerGlobalReceiver(Identifier(ID, "barsign")) { client, handler, buf, responseSender ->
+        ClientPlayNetworking.registerGlobalReceiver(BAR_SIGN_CHANNEL) { client, handler, buf, responseSender ->
+            val blockPos = buf.readBlockPos()
             client.execute {
                 println("barsign")
+                println(blockPos)
                 BarSignEditor.open()
             }
         }
