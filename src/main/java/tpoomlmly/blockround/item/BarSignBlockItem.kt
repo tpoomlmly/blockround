@@ -4,16 +4,19 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
-import net.minecraft.block.entity.SignBlockEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
+import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 import tpoomlmly.blockround.Blockround
+import tpoomlmly.blockround.entity.BarSignBlockEntity
+import tpoomlmly.blockround.network.BarSignEditorOpenS2CPacket
 
 class BarSignBlockItem : BlockItem(
     Blockround.BAR_SIGN_BLOCK,
@@ -43,7 +46,7 @@ class BarSignBlockItem : BlockItem(
     }
 
     override fun postPlacement(
-        pos: BlockPos?,
+        pos: BlockPos,
         world: World,
         player: PlayerEntity?,
         stack: ItemStack?,
@@ -51,8 +54,12 @@ class BarSignBlockItem : BlockItem(
     ): Boolean {
         val postPlacementSuccess = super.postPlacement(pos, world, player, stack, state)
         if (!world.isClient && !postPlacementSuccess && player != null) {
-            player.openEditSignScreen(world.getBlockEntity(pos) as SignBlockEntity?)
-            // TODO player.openEditSignScreen(world.getBlockEntity(pos) as BarSignBlockEntity?)
+            // Tell the client to open the edit sign screen
+            val sign = world.getBlockEntity(pos) as BarSignBlockEntity
+            val serverPlayer = player as ServerPlayerEntity
+            sign.editor = player.uuid
+            serverPlayer.networkHandler.sendPacket(BlockUpdateS2CPacket(world, pos))
+            serverPlayer.networkHandler.sendPacket(BarSignEditorOpenS2CPacket(pos))
         }
         return postPlacementSuccess
     }

@@ -28,7 +28,7 @@ class BarSignBlockEntity(
             field = value
             if (!value) editor = null
         }
-    var venueName: Text = Text.of("")
+    var venueName: Text = Text.of("FUCK")
         private set
     var venueId = 0
         private set
@@ -88,15 +88,14 @@ class BarSignBlockEntity(
 
     override fun copyItemDataRequiresOperator() = true
 
-
     private fun getCommandSource(player: ServerPlayerEntity?) = ServerCommandSource(
         CommandOutput.DUMMY,
         Vec3d.ofCenter(pos),
         Vec2f.ZERO,
         world as ServerWorld?,
         2,
-        if (player == null) "Bar Sign" else player.name.string,
-        if (player == null) LiteralText("Sign") else player.displayName,
+        player?.name?.string ?: "Bar Sign",
+        player?.displayName ?: LiteralText("Sign"),
         world!!.server,
         player,
     )

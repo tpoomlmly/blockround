@@ -17,6 +17,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldAccess
 import net.minecraft.world.WorldView
+import tpoomlmly.blockround.entity.BarSignBlockEntity
 
 class BarSignBlock : AbstractSignBlock(
     FabricBlockSettings.of(Material.WOOD).noCollision().strength(1F).sounds(BlockSoundGroup.WOOD),
@@ -37,8 +38,6 @@ class BarSignBlock : AbstractSignBlock(
             this.stateManager.defaultState.with(FACING, Direction.NORTH)
                 .with(WATERLOGGED, false)
     }
-
-    override fun getTranslationKey(): String = asItem().translationKey
 
     override fun getOutlineShape(
         state: BlockState,
@@ -106,11 +105,15 @@ class BarSignBlock : AbstractSignBlock(
         return state.with(FACING, rotation.rotate(state.get(FACING)))
     }
 
-    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState? {
+    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
         return state.rotate(mirror.getRotation(state.get(FACING)))
     }
 
     override fun appendProperties(builder: StateManager.Builder<Block?, BlockState?>) {
         builder.add(FACING, WATERLOGGED)
     }
+
+    override fun createBlockEntity(pos: BlockPos, state: BlockState) = BarSignBlockEntity(pos, state)
+
+    override fun canMobSpawnInside() = false
 }
