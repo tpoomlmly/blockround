@@ -19,22 +19,23 @@ import net.minecraft.world.WorldView
 import tpoomlmly.blockround.entity.BarSignBlockEntity
 
 class BarSignBlock : AbstractSignBlock(
-    FabricBlockSettings.of(Material.WOOD).noCollision().strength(1F).sounds(BlockSoundGroup.WOOD),
+    FabricBlockSettings.of(Material.DECORATION).noCollision().strength(1F).sounds(BlockSoundGroup.WOOD),
     SignType.OAK
 ) {
     companion object {
         val FACING: DirectionProperty = HorizontalFacingBlock.FACING
         private val OUTLINES = mapOf(
-            Direction.NORTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 15.0, 8.5),
-            Direction.SOUTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 15.0, 8.5),
-            Direction.EAST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 15.0, 1.5),
-            Direction.WEST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 15.0, 1.5),
+            Direction.NORTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 19.0, 8.5),
+            Direction.SOUTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 19.0, 8.5),
+            Direction.EAST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 19.0, 14.5),
+            Direction.WEST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 19.0, 14.5),
         )
     }
 
     init {
         this.defaultState =
-            this.stateManager.defaultState.with(FACING, Direction.NORTH)
+            this.stateManager.defaultState
+                .with(FACING, Direction.NORTH)
                 .with(WATERLOGGED, false)
     }
 
