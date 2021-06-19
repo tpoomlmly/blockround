@@ -56,26 +56,8 @@ class Blockround : ModInitializer {
         registerItem(BAR_SIGN_BLOCK_ITEM, "bar_sign_block_item")
         registerItem(WEB_ITEM, "web_item")
 
-        AttackBlockCallback.EVENT.register { _, world, _, pos, _ ->
-            if (world.getBlockEntity(
-                    pos,
-                    BAR_SIGN_BLOCK_ENTITY_TYPE
-                ).isPresent
-            ) println("fuck") else println("ohno")
-            ActionResult.PASS
-        }
-
         ServerPlayNetworking.registerGlobalReceiver(BAR_SIGN_CHANNEL) { server, player, handler, buf, sender ->
 
-        }
-
-        ClientPlayNetworking.registerGlobalReceiver(BAR_SIGN_CHANNEL) { client, handler, buf, responseSender ->
-            val blockPos = buf.readBlockPos()
-            client.execute {
-                println("barsign")
-                println(blockPos)
-                BarSignEditor.open()
-            }
         }
     }
 

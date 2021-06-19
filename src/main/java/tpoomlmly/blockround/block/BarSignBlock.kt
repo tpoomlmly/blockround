@@ -49,24 +49,18 @@ class BarSignBlock : AbstractSignBlock(
     }
 
     override fun canPlaceAt(state: BlockState, world: WorldView, pos: BlockPos): Boolean {
-        return world.getBlockState(pos.offset(state.get(FACING).opposite)).material.isSolid
+        return world.getBlockState(pos.down()).material.isSolid
     }
 
+    /**
+     * Calculates the state of this sign when it's placed.
+     */
     override fun getPlacementState(context: ItemPlacementContext): BlockState? {
-        var blockState = defaultState
-
-        for (direction in context.placementDirections) {
-            if (direction.axis.isHorizontal) {
-                blockState = blockState.with(FACING, direction.opposite)
-
-                if (blockState.canPlaceAt(context.world, context.blockPos)) return blockState.with(
-                    WATERLOGGED,
-                    context.world.getFluidState(context.blockPos).fluid === Fluids.WATER
-                )
-            }
-        }
-
-        return null
+        val directions = context.placementDirections.filter {dir -> dir.axis.isHorizontal}
+        return if (directions.isEmpty()) null
+        else defaultState
+            .with(FACING, directions[0].opposite)
+            .with(WATERLOGGED, context.world.getFluidState(context.blockPos).fluid === Fluids.WATER)
     }
 
     /**
@@ -79,7 +73,7 @@ class BarSignBlock : AbstractSignBlock(
         player: PlayerEntity,
         hand: Hand,
         hitResult: BlockHitResult
-    ) = if (world.isClient()) ActionResult.CONSUME else ActionResult.PASS
+    ) = if (world.isClient()) ActionResult.CONSUME else ActionResult.SUCCESS
 
     override fun getStateForNeighborUpdate(
         state: BlockState,
@@ -89,7 +83,7 @@ class BarSignBlock : AbstractSignBlock(
         pos: BlockPos?,
         neighborPos: BlockPos?
     ): BlockState? {
-        return if (direction.opposite == state.get(FACING) && !state.canPlaceAt(world, pos))
+        return if (direction == Direction.DOWN && !state.canPlaceAt(world, pos))
             Blocks.AIR.defaultState
         else super.getStateForNeighborUpdate(
             state,
