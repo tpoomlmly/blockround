@@ -12,7 +12,6 @@ import net.minecraft.util.*
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
-import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldAccess
@@ -25,11 +24,11 @@ class BarSignBlock : AbstractSignBlock(
 ) {
     companion object {
         val FACING: DirectionProperty = HorizontalFacingBlock.FACING
-        private val FACING_TO_SHAPE = mapOf(
-            Direction.NORTH to createCuboidShape(0.0, 4.5, 14.0, 16.0, 12.5, 16.0),
-            Direction.SOUTH to createCuboidShape(0.0, 4.5, 0.0, 16.0, 12.5, 2.0),
-            Direction.EAST to createCuboidShape(0.0, 4.5, 0.0, 2.0, 12.5, 16.0),
-            Direction.WEST to createCuboidShape(14.0, 4.5, 0.0, 16.0, 12.5, 16.0),
+        private val OUTLINES = mapOf(
+            Direction.NORTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 15.0, 8.5),
+            Direction.SOUTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 15.0, 8.5),
+            Direction.EAST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 15.0, 1.5),
+            Direction.WEST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 15.0, 1.5),
         )
     }
 
@@ -39,24 +38,24 @@ class BarSignBlock : AbstractSignBlock(
                 .with(WATERLOGGED, false)
     }
 
-    override fun getOutlineShape(
-        state: BlockState,
-        world: BlockView?,
-        pos: BlockPos?,
-        context: ShapeContext?
-    ): VoxelShape? {
-        return FACING_TO_SHAPE[state.get(FACING)]
-    }
+    /**
+     * Gets the shape of the outline that appears when someone looks at this block.
+     */
+    override fun getOutlineShape(state: BlockState, world: BlockView?, pos: BlockPos?, context: ShapeContext?) =
+        OUTLINES[state.get(FACING)]
 
-    override fun canPlaceAt(state: BlockState, world: WorldView, pos: BlockPos): Boolean {
-        return world.getBlockState(pos.down()).material.isSolid
-    }
+    /**
+     * Can this sign be placed at the given position?
+     * @return true if the block underneath is solid.
+     */
+    override fun canPlaceAt(state: BlockState, world: WorldView, pos: BlockPos) =
+        world.getBlockState(pos.down()).material.isSolid
 
     /**
      * Calculates the state of this sign when it's placed.
      */
     override fun getPlacementState(context: ItemPlacementContext): BlockState? {
-        val directions = context.placementDirections.filter {dir -> dir.axis.isHorizontal}
+        val directions = context.placementDirections.filter { it.axis.isHorizontal }
         return if (directions.isEmpty()) null
         else defaultState
             .with(FACING, directions[0].opposite)
@@ -75,6 +74,9 @@ class BarSignBlock : AbstractSignBlock(
         hitResult: BlockHitResult
     ) = if (world.isClient()) ActionResult.CONSUME else ActionResult.SUCCESS
 
+    /**
+     * Gets the new state for this block when a neighbour has updated.
+     */
     override fun getStateForNeighborUpdate(
         state: BlockState,
         direction: Direction,
@@ -82,26 +84,22 @@ class BarSignBlock : AbstractSignBlock(
         world: WorldAccess?,
         pos: BlockPos?,
         neighborPos: BlockPos?
-    ): BlockState? {
-        return if (direction == Direction.DOWN && !state.canPlaceAt(world, pos))
-            Blocks.AIR.defaultState
-        else super.getStateForNeighborUpdate(
-            state,
-            direction,
-            neighborState,
-            world,
-            pos,
-            neighborPos
-        )
-    }
+    ): BlockState? = if (direction == Direction.DOWN && !state.canPlaceAt(world, pos))
+        Blocks.AIR.defaultState
+    else super.getStateForNeighborUpdate(
+        state,
+        direction,
+        neighborState,
+        world,
+        pos,
+        neighborPos
+    )
 
-    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
-        return state.with(FACING, rotation.rotate(state.get(FACING)))
-    }
+    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState =
+        state.with(FACING, rotation.rotate(state.get(FACING)))
 
-    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
-        return state.rotate(mirror.getRotation(state.get(FACING)))
-    }
+    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState =
+        state.rotate(mirror.getRotation(state.get(FACING)))
 
     override fun appendProperties(builder: StateManager.Builder<Block?, BlockState?>) {
         builder.add(FACING, WATERLOGGED)
