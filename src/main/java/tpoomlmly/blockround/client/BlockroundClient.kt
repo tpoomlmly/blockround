@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import tpoomlmly.blockround.Blockround
 import tpoomlmly.blockround.client.ui.BarSignEditor
+import tpoomlmly.blockround.entity.BarSignBlockEntity
 
 @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
 class BlockroundClient : ClientModInitializer {
@@ -14,6 +15,8 @@ class BlockroundClient : ClientModInitializer {
                 println("barsign")
                 println(blockPos)
                 BarSignEditor.open()
+                client.world?.getBlockEntity(blockPos)
+                    ?.let { client.openScreen(BarSignEditor(it as BarSignBlockEntity)) }
             }
         }
     }
