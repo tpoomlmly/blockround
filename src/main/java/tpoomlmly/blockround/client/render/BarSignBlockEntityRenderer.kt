@@ -24,7 +24,7 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
     private val barSignItemStack = ItemStack(Blockround.BAR_SIGN_BLOCK_ITEM, 1)
     private val minecraftClient: MinecraftClient by lazy { MinecraftClient.getInstance() }
 
-    override fun render(
+    override fun render(  // TODO render venue image
         signEntity: BarSignBlockEntity,
         tickDelta: Float,
         matrices: MatrixStack,
