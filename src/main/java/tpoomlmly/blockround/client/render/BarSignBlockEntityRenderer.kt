@@ -23,6 +23,7 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
     private val textRenderer: TextRenderer = ctx.textRenderer
 //    private val model: BarSignModel =
 //        BarSignModel(ctx.getLayerModelPart(EntityModelLayer(Identifier(Blockround.ID, "bar_sign"), "frame")))
+    private val model = BarSignModel()
 
     override fun render(
         signEntity: BarSignBlockEntity,
@@ -46,7 +47,6 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
 //            Identifier(Blockround.ID, "block/bar_sign"),
 //            Identifier(Blockround.ID, "block/bar_sign")
 //        )
-        val model = BarSignModel()
         val vertexConsumer = spriteIdentifier.getVertexConsumer(vertexConsumerProvider, model::getLayer)
         model.root.render(matrices, vertexConsumer, light, overlay)
         matrices.pop()
