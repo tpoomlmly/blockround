@@ -84,7 +84,7 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
     /**
      * Renders text on one side of the sign.
      */
-    private fun renderText(
+    private fun renderText(  // TODO add line wrapping
         text: Text,
         matrixModel: Matrix4f,
         vertexConsumerProvider: VertexConsumerProvider,

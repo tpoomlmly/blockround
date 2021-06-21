@@ -1,6 +1,7 @@
 {
   "credit": "Made with Blockbench",
   "texture_size": [64, 64],
+  "gui_light": "front",
   "textures": {
     "0": "blockround:block/bar_sign_base"
   },

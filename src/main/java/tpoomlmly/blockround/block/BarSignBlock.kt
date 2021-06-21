@@ -25,10 +25,10 @@ class BarSignBlock : AbstractSignBlock(
     companion object {
         val FACING: DirectionProperty = HorizontalFacingBlock.FACING  // TODO allow all sign directions
         private val OUTLINES = mapOf(
-            Direction.NORTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 19.0, 8.5),
-            Direction.SOUTH to createCuboidShape(1.5, 0.5, 7.5, 14.5, 19.0, 8.5),
-            Direction.EAST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 19.0, 14.5),
-            Direction.WEST to createCuboidShape(7.5, 0.5, 1.5, 8.5, 19.0, 14.5),
+            Direction.NORTH to createCuboidShape(0.0, 0.0, 7.0, 16.0, 20.0, 9.0),
+            Direction.SOUTH to createCuboidShape(0.0, 0.0, 7.0, 16.0, 20.0, 9.0),
+            Direction.EAST to createCuboidShape(7.0, 0.0, 0.0, 9.0, 20.0, 16.0),
+            Direction.WEST to createCuboidShape(7.0, 0.0, 0.0, 9.0, 20.0, 16.0),
         )
     }
 
