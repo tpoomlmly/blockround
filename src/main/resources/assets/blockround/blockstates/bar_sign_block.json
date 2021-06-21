@@ -1,18 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "blockround:block/bar_sign"
+      "model": "blockround:item/bar_sign_block_item"
     },
     "facing=east": {
-      "model": "blockround:block/bar_sign",
+      "model": "blockround:item/bar_sign_block_item",
       "y": 90
     },
     "facing=south": {
-      "model": "blockround:block/bar_sign"
+      "model": "blockround:item/bar_sign_block_item",
+      "y": 180
     },
     "facing=west": {
-      "model": "blockround:block/bar_sign",
-      "y": 90
+      "model": "blockround:item/bar_sign_block_item",
+      "y": 270
     }
   }
 }

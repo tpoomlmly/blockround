@@ -31,7 +31,7 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
         vertexConsumerProvider: VertexConsumerProvider,
         light: Int,
         overlay: Int
-    ) {
+    ) {  // TODO maybe animate it swinging like a banner
         val blockState = signEntity.cachedState
         matrices.push()  // push a new identity matrix onto the stack
         // Move the sign into place
@@ -93,7 +93,7 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
         text,
         -textRenderer.getWidth(text) / 2f,  // centred
         0f,
-        4208437,  // dark grey
+        0,  // black
         false,
         matrixModel,
         vertexConsumerProvider,
