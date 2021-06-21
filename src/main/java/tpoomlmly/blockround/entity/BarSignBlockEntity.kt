@@ -28,7 +28,7 @@ class BarSignBlockEntity(
             field = value
             if (!value) editor = null
         }
-    var venueName: Text = Text.of("FUCK")
+    var venueName: Text = Text.of("FUCK")  // TODO change this to something meaningful
         private set
     var venueId = 0
         private set
