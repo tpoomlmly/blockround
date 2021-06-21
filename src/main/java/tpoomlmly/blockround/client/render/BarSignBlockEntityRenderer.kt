@@ -101,16 +101,27 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
 
     class BarSignModel : Model(RenderLayer::getEntityCutoutNoCull) {
 
-        val root: ModelPart
+        private val panel = ModelPart(  // The sign bit
+            toCuboidList(
+                ModelPartBuilder.create().cuboid(-6.5f + 8, -19f + 8, -0.5f - 8, 13f, 18f, 1f)
+            ),
+            mapOf()
+        )
+        val root = ModelPart(  // The frame
+            toCuboidList(
+                ModelPartBuilder.create()
+                    .cuboid("right_leg", 15f, -11f, -9f, 1f, 18f, 2f)
+                    .cuboid("left_leg", 0f, -11f, -9f, 1f, 18f, 2f)
+                    .cuboid("crossbar", 0f, -12f, -9f, 16f, 1f, 2f)
+                    .cuboid("right_foot", 15f, 7f, -11f, 1f, 1f, 6f)
+                    .cuboid("left_foot", 0f, 7f, -11f, 1f, 1f, 6f)
+            ),
+            mapOf("panel" to panel)
+        )
 
-        init {
-            val builder = ModelPartBuilder.create()
-                .cuboid("right_leg", 15f, -11f, -9f, 1f, 18f, 2f)
-                .cuboid("left_leg", 0f, -11f, -9f, 1f, 18f, 2f)
-                .cuboid("crossbar", 0f, -12f, -9f, 16f, 1f, 2f)
-                .cuboid("right_foot", 15f, 7f, -11f, 1f, 1f, 6f)
-                .cuboid("left_foot", 0f, 7f, -11f, 1f, 1f, 6f)
-            root = ModelPart(builder.build().map { data -> data.createCuboid(16, 16) }, mapOf())
+        companion object {
+            private fun toCuboidList(builder: ModelPartBuilder): List<ModelPart.Cuboid> =
+                builder.build().map { cuboidData -> cuboidData.createCuboid(16, 16) }
         }
 
         override fun render(
