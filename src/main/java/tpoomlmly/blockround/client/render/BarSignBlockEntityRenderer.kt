@@ -8,6 +8,7 @@ import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory
 import net.minecraft.client.render.model.BakedModel
+import net.minecraft.client.render.model.json.ModelTransformation
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
@@ -38,19 +39,19 @@ class BarSignBlockEntityRenderer(ctx: BlockEntityRendererFactory.Context) : Bloc
         matrices.translate(0.5, 0.5, 0.5)
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-(blockState.get(BarSignBlock.FACING)).asRotation()))
 
+        // Render the model
         matrices.push()
-        matrices.translate(-0.5, -0.5, -0.5)
-        val model: BakedModel = minecraftClient.itemRenderer.models.getModel(barSignItemStack)
-        minecraftClient.blockRenderManager.modelRenderer.render(
-            matrices.peek(),
-            vertexConsumerProvider.getBuffer(RenderLayer.getCutout()),
-            blockState,
-            model,
-            1f,
-            1f,
-            1f,
+        matrices.translate(0.0, 7 / 48.0, 0.0) // compensate for item frame transformations
+        val scaleUpFactor = 4 / 3f
+        matrices.scale(scaleUpFactor, scaleUpFactor, scaleUpFactor)
+        minecraftClient.itemRenderer.renderItem(
+            barSignItemStack,
+            ModelTransformation.Mode.FIXED,  // item frame mode
             light,
-            OverlayTexture.DEFAULT_UV
+            overlay,
+            matrices,
+            vertexConsumerProvider,
+            0
         )
         matrices.pop()
 
