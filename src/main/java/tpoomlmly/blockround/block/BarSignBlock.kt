@@ -109,4 +109,6 @@ class BarSignBlock : AbstractSignBlock(
     override fun createBlockEntity(pos: BlockPos, state: BlockState) = BarSignBlockEntity(pos, state)
 
     override fun canMobSpawnInside() = false
+
+    override fun getRenderType(state: BlockState?) = BlockRenderType.MODEL  // TODO ENTITYBLOCK_ANIMATED might be the key to making it swing
 }
