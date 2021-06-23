@@ -3,20 +3,14 @@ package tpoomlmly.blockround
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntityTypeBuilder
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
-import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import tpoomlmly.blockround.block.BarSignBlock
-import tpoomlmly.blockround.client.ui.BarSignEditor
 import tpoomlmly.blockround.entity.BarSignBlockEntity
 import tpoomlmly.blockround.item.BarSignBlockItem
 
@@ -51,18 +45,11 @@ class Blockround : ModInitializer {
             BAR_SIGN_BLOCK_ENTITY_TYPE
         )
 
-        registerBlock(BAR_SIGN_BLOCK, "bar_sign_block")
+        Registry.register(Registry.BLOCK, Identifier(ID, "bar_sign_block"), BAR_SIGN_BLOCK)
 
         registerItem(BAR_SIGN_BLOCK_ITEM, "bar_sign_block_item")
         registerItem(WEB_ITEM, "web_item")
-
-        ServerPlayNetworking.registerGlobalReceiver(BAR_SIGN_CHANNEL) { server, player, handler, buf, sender ->
-
-        }
     }
-
-    private fun registerBlock(block: Block, name: String) =
-        Registry.register(Registry.BLOCK, Identifier(ID, name), block)
 
     private fun registerItem(item: Item, name: String) = Registry.register(Registry.ITEM, Identifier(ID, name), item)
 }

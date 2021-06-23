@@ -11,12 +11,9 @@ import tpoomlmly.blockround.entity.BarSignBlockEntity
 @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
 class BlockroundClient : ClientModInitializer {
     override fun onInitializeClient() {
-        ClientPlayNetworking.registerGlobalReceiver(Blockround.BAR_SIGN_CHANNEL) { client, handler, buf, responseSender ->
+        ClientPlayNetworking.registerGlobalReceiver(Blockround.BAR_SIGN_CHANNEL) { client, _, buf, _ ->
             val blockPos = buf.readBlockPos()
             client.execute {
-                println("barsign")
-                println(blockPos)
-                BarSignEditor.open()
                 client.world?.getBlockEntity(blockPos)
                     ?.let { client.openScreen(BarSignEditor(it as BarSignBlockEntity)) }
             }
