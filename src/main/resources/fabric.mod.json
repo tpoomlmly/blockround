@@ -13,15 +13,22 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "tpoomlmly.blockround.client.BlockroundClient"
+      {
+        "adapter": "kotlin",
+        "value": "tpoomlmly.blockround.client.BlockroundClient"
+      }
     ],
     "main": [
-      "tpoomlmly.blockround.Blockround"
+      {
+        "adapter": "kotlin",
+        "value": "tpoomlmly.blockround.Blockround"
+      }
     ]
   },
   "depends": {
     "fabricloader": ">=0.11.6",
     "fabric": "*",
-    "minecraft": "1.17"
+    "minecraft": "1.17",
+    "fabric-language-kotlin": ">=1.6.2+kotlin.1.5.20"
   }
 }
